@@ -1,3 +1,10 @@
 # depslib dependency file v1.0
 1538674889 source:d:\cris\desktop\tp2\tp_2\arrayemployees.c
 
+1538767850 source:c:\users\alumno\desktop\cris\tp_2_2018-master\tp_2\arrayemployees.c
+
+1538784810 source:c:\users\alumno\desktop\cris\tp_2_2018-master\tp_2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

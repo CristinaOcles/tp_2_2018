@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define TAM 1000
 
 
@@ -47,10 +48,12 @@ int main()
 
     char seguir='s';
     int opcion=0;
+    int idEmployee = 1000;
 
 
     eEmployee employees[TAM];
     initEmployees(employees, TAM);
+
 
 
 
@@ -221,15 +224,8 @@ int newEmployee (eEmployee list[],int len)
         id = index + 1;
         existeId = findEmployeeById(list, len, id);
 
-        if(existeId != NULL)
+        if(existeId>-1)
         {
-            printf("Ya existe un empleado con el id %d\n", id);
-            printEmployee(list[index]);
-            system("pause");
-        }
-        else
-        {
-
             printf("Ingrese nombre: \n");
             fflush(stdin);
             gets(name);
@@ -243,8 +239,8 @@ int newEmployee (eEmployee list[],int len)
             idSector = menuSectores();
             printf("\n\n");
 
-            printf("Nombre    apellido    salario   sector\n");
-            printf("%10s %10s %5.2f  %3d\n", name, lastName, salary, idSector);
+            printf("Nombre       apellido       salario      sector\n\n");
+            printf("%10s %10s %5.2f  %10d\n\n", name, lastName, salary, idSector);
             printf("Si los datos son correctos ingrese 1, si los datos son incorrectos ingrese 9\n");
             scanf("%d", &opcion);
 
@@ -254,7 +250,7 @@ int newEmployee (eEmployee list[],int len)
 
                 if(retorno == 0)
                 {
-                    printf("¡¡¡Alta exitosa!!!!\n\n");
+                    printf("Alta exitosa!!!!\n\n");
                     retorno = 0;
                 }
                 else
@@ -272,7 +268,13 @@ int newEmployee (eEmployee list[],int len)
 
 
 
+        } else{
+
+            printf("Ya existe un empleado con el id %d\n", id);
+            printEmployee(list[index]);
+            system("pause");
         }
+
 
 
         return retorno;
@@ -292,9 +294,10 @@ int findEmployeeById(eEmployee list[],int len, int id)
     {
         for(int i=0; i<len; i++)
         {
-            list[i].id == id;
-            index = i;
+            if(list[i].id == id && list[i].isEmpty == 0);
+            {index = i;
             break;
+            }
         }
 
     }
@@ -354,10 +357,11 @@ int removeEmployee(eEmployee list[], int len, int id)
 
 int removeForId(eEmployee list[], int len)
 {
-    int retorno = -1;
+
     int id;
     int existe;
     int baja;
+    char seguir;
 
     printf("\n ***Baja de empleado***\n\n");
 
@@ -366,17 +370,23 @@ int removeForId(eEmployee list[], int len)
 
     existe = findEmployeeById(list, len, id);
 
-    if (existe != NULL)
+    if(existe>-1)
     {
-        // aca se muestra el empleado y pregunta si realmente desea eliminarlo
-        baja = removeEmployee(list, len, id);
-        if(baja == 0)
-        {
+         printEmployee(list[existe]);
+
+            printf("\nDesea eliminar? s/n: \n");
+            fflush(stdin);
+            scanf("%c", &seguir);
+
+            if(seguir == 'n')
+            {
+                printf("Baja cancelada\n");
+            }
+            else{
+            baja = removeEmployee(list, len, id);
             printf("Baja exitosa! \n");
-            retorno = 0;
-        }
 
-
+            }
     }
     else
     {
@@ -398,7 +408,7 @@ void printEmployee(eEmployee oneEmployee)
 
     index = oneEmployee.idSector - 1;
 
-    printf("%3d   %6s    %6s    %5.2f   %10s", oneEmployee.id, oneEmployee.name, oneEmployee.lastName, oneEmployee.salary, sectores[index]);
+    printf("%3d   %6s     %6s     %5.2f     %10s\n\n", oneEmployee.id, oneEmployee.name, oneEmployee.lastName, oneEmployee.salary, sectores[index]);
 
 }
 
@@ -431,6 +441,7 @@ int modifyEmploye(eEmployee list[], int len)
     int indice;
     int empleado;
     int opcion;
+    int retorno = -1;
 
 
     printf("Modificar empleado \n\n");
@@ -449,12 +460,7 @@ int modifyEmploye(eEmployee list[], int len)
 
     indice = findEmployeeById(list, len, id);
 
-    if(indice == NULL)
-    {
-        printf("No se encuentra ningun empleado con ese id\n");
-
-    }
-    else
+    if(indice>-1)
     {
         indice = id - 1;
 
@@ -492,18 +498,23 @@ int modifyEmploye(eEmployee list[], int len)
             break;
         default:
             break;
+        retorno = 0;
+        }
+    }else{
+                printf("No se encuentra ningun empleado con ese id\n");
+                retorno = -1;
 
         }
 
 
 
 
-    }
-
-
-
-
 }
+
+
+
+
+
 
 
 
